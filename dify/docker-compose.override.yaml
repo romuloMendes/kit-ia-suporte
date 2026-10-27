@@ -16,6 +16,7 @@ services:
     networks: [kit-rede]
   nginx:
     networks:
+      default: {}
       kit-rede:
         aliases: [dify]
 
