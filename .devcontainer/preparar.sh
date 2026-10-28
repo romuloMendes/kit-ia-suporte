@@ -12,6 +12,12 @@ if [ ! -f dify/.env ]; then
       dify/.env.example > dify/.env
 fi
 
+# O .env.example do Dify não traz a conexão com o pgvector (ela fica em
+# envs/core-services/shared.env.example); sem isso a indexação do Conhecimento falha.
+if ! grep -q "^PGVECTOR_HOST=" dify/.env; then
+  grep -E "^PGVECTOR_" dify/envs/core-services/shared.env.example >> dify/.env
+fi
+
 if [ ! -f chatwoot/.env ]; then
   sed -e "s#^SECRET_KEY_BASE=.*#SECRET_KEY_BASE=$(aleatorio 128)#" \
       chatwoot/.env.example > chatwoot/.env
